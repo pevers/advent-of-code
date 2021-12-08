@@ -1,9 +1,7 @@
 use std::fs;
 
 fn main() {
-    let mut horizontal = 0;
-    let mut depth = 0;
-    fs::read_to_string("input")
+    let (horizontal, depth) = fs::read_to_string("input")
         .unwrap()
         .lines()
         .map(|line| {
@@ -12,11 +10,13 @@ fn main() {
         })
         .collect::<Vec<(String, u32)>>()
         .iter()
-        .for_each(|(command, input)| match command.as_str() {
-            "forward" => horizontal += input,
-            "down" => depth += input,
-            "up" => depth -= input,
-            _ => panic!("invalid command"),
+        .fold((0, 0), |accum, (command, input)| {
+            return match command.as_str() {
+                "forward" => (accum.0 + input, accum.1),
+                "down" => (accum.0, accum.1 + input),
+                "up" => (accum.0, accum.1 - input),
+                _ => panic!("invalid command"),
+            };
         });
     println!("{}", horizontal * depth);
 }
