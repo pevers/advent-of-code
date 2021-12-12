@@ -1,6 +1,8 @@
 use std::fs;
 
 // Ugly solution. Don't know how to cut this down functionaly
+// EDIT: Found it. Should have used drain_filter + scan 
+// https://github.com/timvisee/advent-of-code-2021/blob/master/day03b/src/main.rs
 
 fn main() {
     let content = fs::read_to_string("input").unwrap();
