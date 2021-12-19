@@ -1,3 +1,5 @@
+use std::collections::HashSet;
+
 // Partly taken: https://github.com/timvisee/advent-of-code-2021/blob/master/day09a/src/main.rs
 
 pub fn main() {
@@ -37,11 +39,12 @@ pub fn main() {
             .collect()
     };
 
-    let find_basin = |depths: Coord| -> u32 {
+    let find_basin = |depths: Coord| -> HashSet<Coord> {
         let mut basins = find_basin_inner(&map, depths);
-        let mut total = 1;
+        let mut total: HashSet<Coord> = HashSet::new();
+        total.insert(depths);
         while !basins.is_empty() {
-            total += basins.len() as u32;
+            total.extend(&basins);
             basins = basins
                 .iter()
                 .flat_map(|&b| find_basin_inner(&map, b))
@@ -50,7 +53,7 @@ pub fn main() {
         total
     };
 
-    let mut basins: Vec<u32> = depths.iter().map(|b| find_basin(*b)).collect();
-    basins.sort_by(|a, b| b.cmp(a));
-    println!("{:?}", basins[0] * basins[1] * basins[2]);
+    let mut basins: Vec<HashSet<Coord>> = depths.iter().map(|b| find_basin(*b)).collect();
+    basins.sort_by(|a, b| b.iter().count().cmp(&a.iter().count()));
+    println!("{:?}", basins[0].len() * basins[1].len() * basins[2].len());
 }
