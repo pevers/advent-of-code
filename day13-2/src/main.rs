@@ -25,17 +25,15 @@ fn main() {
             }
         }
     }
-    let map = fold
-        .split("\n")
-        .fold(map.clone(), |accum, command| {
-            let (command, coord) = command.split_once("=").unwrap();
-            match command {
-                "fold along y" => fold_y(&accum, coord.parse::<usize>().unwrap()),
-                "fold along x" => fold_x(&accum, coord.parse::<usize>().unwrap()),
-                _ => unreachable!(),
-            }
-        });
-    
+    let map = fold.split("\n").fold(map.clone(), |accum, command| {
+        let (command, coord) = command.split_once("=").unwrap();
+        match command {
+            "fold along y" => fold_y(&accum, coord.parse::<usize>().unwrap()),
+            "fold along x" => fold_x(&accum, coord.parse::<usize>().unwrap()),
+            _ => unreachable!(),
+        }
+    });
+
     for y in 0..map.len() {
         for x in 0..map[0].len() {
             print!("{}", map[y][x]);
